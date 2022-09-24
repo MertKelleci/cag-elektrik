@@ -1,0 +1,40 @@
+@import "../pages/FormStyle.scss";
+
+.productCard{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.5% 0.5%;
+    border: 5px solid $grey-color;
+    background-color: $blue-color;
+    border-radius: 10px;
+    padding: 3% 1%;
+
+    .container{
+        display: flex;
+        flex-grow: 1;
+
+        .serial{
+            overflow-x: auto;
+        }
+    }
+
+    .formArea{
+        width: 50px;
+        height: 20px;
+    }
+
+    .button{
+        padding: 10px 20px;
+        border-radius: 10px;
+    }
+    
+}
+
+th{
+    .button{
+        width: 75px;
+        height: 50px;
+        border-radius: 10px;
+    }
+}

@@ -1,0 +1,28 @@
+.page{
+    display: flex;
+    flex-direction: column;
+    padding: 7% 3%;
+
+    &-header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .cells{
+            display: flex;
+            flex-direction: column;
+            p+p {
+                margin-top: 2%;
+            }
+        }
+    }
+
+    &-items{
+        table{
+            margin-top: 5%;
+            td {
+                text-align: center;
+                vertical-align: middle;
+            }
+        }
+    }
+}

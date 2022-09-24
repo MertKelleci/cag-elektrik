@@ -1,0 +1,46 @@
+@import "../FormStyle.scss";
+
+.items-edit{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: auto;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+    height: 40%;
+}
+
+.half{
+    height: 35% !important;
+}
+
+.editArea-edit{
+    box-sizing: border-box;
+    height: 40%;
+    overflow: auto;
+    &::-webkit-scrollbar{
+        display: none;
+    }
+
+    .cells{
+        display: flex;
+        justify-content: space-around;
+        align-content: center;
+        padding: 1% 5%;
+        flex-direction: row;
+        width: 100%;
+        box-sizing: border-box;
+
+        .button-EditP{
+            width: 25%;
+            border-radius: 10px;
+        }
+
+        .selectField{
+            width: 25%;
+            align-self: flex-end;
+        }
+    }
+
+}

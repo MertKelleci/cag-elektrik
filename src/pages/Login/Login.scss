@@ -1,0 +1,17 @@
+@import "../FormStyle.scss";
+
+.center{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .button-login{
+        padding: 5% 7%;
+        border-radius: 10px;
+        margin: 5% 0 0 30%;
+    }
+
+}

@@ -1,0 +1,150 @@
+@import "../FormStyle.scss";
+
+
+.controlPanel {
+    display: flex;
+    justify-content: space-between;
+    padding: 1% 2%;
+    border-bottom: 2px solid $grey-color;
+    margin-bottom: 1%;
+
+    .button2 {
+        height: 60px;
+        width: 120px;
+        margin: 1% 2% 0 0;
+        border-radius: 10px;
+    }
+
+    .buttonGroup{
+        display: flex;
+        flex-direction: row;
+
+        .button3{
+            height: 30px;
+            width: 60px;
+            margin: 10% 15% 0 0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+    }
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    max-height: 78%;
+    min-height: 78%;
+    box-sizing: border-box;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.styled-table{
+    height: 80%;
+    overflow: auto;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+table {
+    width: 95%;
+    border-collapse: collapse;
+    margin: 10px 25px;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+    thead{
+        position: sticky;
+        top: 0;
+    }
+
+    thead tr {
+        background-color: $dark-color;
+        color: $white-color;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    th,
+    td {
+        padding: 12px 15px;
+    }
+
+    tbody tr {
+        border-bottom: 1px solid $grey-color;
+
+        &:nth-of-type(even) {
+            background-color: darken($color: $white-color, $amount: 10%);
+        }
+
+        &:last-of-type {
+            border-bottom: 2px solid $dark-color;
+        }
+    }
+}
+
+// table{
+//     border-collapse: collapse;
+//     margin: 25px 25px;
+//     font-size: 0.9em;
+//     font-family: sans-serif;
+//     min-width: 400px;
+//     width: 95%;
+//     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+//     thead{
+//         position: sticky;
+//         top: 0;
+//     }
+
+//     thead tr {
+//         background-color: #009879;
+//         color: #ffffff;
+//         text-align: center;
+//     }
+
+//     th, td{
+//         padding: 12px 15px;
+//     }
+
+//     tbody tr{
+//         border-bottom: 1px solid #dddddd;
+
+//         &:nth-of-type(even) {
+//             background-color: #f3f3f3;
+//         }
+
+//         &:last-of-type {
+//             border-bottom: 2px solid #009879;
+//         }
+//     }
+// }
+
+        // border: 2px solid red;
+        // width: 100%;
+        // tbody{
+        //     border: 2px solid blue;
+        //     display: block;
+        //     overflow: auto;
+        //     height: 200px;
+        //     width: 100%;
+        // }
+        // thead tr{
+        //     border: 2px solid green;
+        //     display: block;
+        //     width: 100%;
+        // }
+
+.labelInfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

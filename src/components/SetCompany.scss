@@ -1,0 +1,9 @@
+.padding-left1 {
+    padding-left: 10%;
+}
+
+.pageContent{
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}

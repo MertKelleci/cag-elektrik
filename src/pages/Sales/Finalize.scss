@@ -1,0 +1,62 @@
+@import "../FormStyle.scss";
+
+.receipt{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    overflow: auto;
+    height: 50%;
+    &::-webkit-scrollbar{
+       display: none;
+    }
+    table{
+        width: 50%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        min-width: 400px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+        thead tr{
+            background-color: $dark-color;
+            color: $white-color;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        th, td{
+            padding: 12px 15px;
+        }
+
+        tbody tr{
+            border-bottom: 1px solid $grey-color;
+            
+            &:nth-of-type(even){
+                background-color: darken($color: $white-color, $amount: 10%);
+            }
+
+            &:last-of-type{
+                border-bottom: 2px solid $dark-color;
+            }
+        }
+    }
+}
+
+.buyers-form{
+    padding: 0 5%;
+    
+    .finalize-cells{
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+
+        .finalize-button{
+            margin: 3% 12%;
+            height: 50px;
+            width: 70px;
+            border-radius: 10px;
+        }
+    }
+}
