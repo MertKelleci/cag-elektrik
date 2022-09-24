@@ -44,13 +44,16 @@ const NewProduct = () => {
 
   useEffect(() => {
     if (product.name !== "") {
-      ipcRenderer.send("addItem", { item: product, dest: "items" });
+      ipcRenderer
+        .invoke("addItem", { item: product, dest: "items" })
+        .then((message) => {
+          toast(message);
+        })
+        .catch((err) => {
+          toast(err);
+        });
     }
   }, [product]);
-
-  ipcRenderer.on("addItem:message", (event, data) => {
-    toast(data.message);
-  });
 
   const handleSelect = (selectedOption) => {
     setSelected(selectedOption);

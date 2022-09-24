@@ -22,7 +22,10 @@ const ProductComp = ({ item, setSelected, selected, brand }) => {
   const [highLight, setHighlight] = useState(false);
 
   useEffect(() => {
-    ipcRenderer.send("getCompInfo", { brandID });
+    ipcRenderer.invoke("getCompInfo", { brandID }).then((discount) => {
+      setDisc(discount);
+      setpPrice((price - (price * disc) / 100).toFixed(2));
+    });
   }, []);
 
   useEffect(() => {
@@ -36,11 +39,6 @@ const ProductComp = ({ item, setSelected, selected, brand }) => {
   const [pPrice, setpPrice] = useState(
     (price - (price * disc) / 100).toFixed(2)
   );
-
-  ipcRenderer.on("getCompInfo:done", (e, data) => {
-    setDisc(data.discount);
-    setpPrice((price - (price * disc) / 100).toFixed(2));
-  });
 
   const handleSelection = () => {
     setSelected(item);

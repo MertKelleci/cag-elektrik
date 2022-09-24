@@ -44,11 +44,20 @@ const EditProduct = () => {
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-    ipcRenderer.send("paginatedQuery", {
-      collectionName: "items",
-      lastdoc: lastdoc,
+    ipcRenderer
+      .invoke("paginatedQuery", {
+        collectionName: "items",
+        lastdoc: lastdoc,
+      })
+      .then((items) => {
+        if (!items.empty) {
+          setList([...list, ...items]);
+        }
+        setLoaded(true);
+      });
+    ipcRenderer.invoke("dropdown").then((thisDropdown) => {
+      setDropdown(thisDropdown);
     });
-    ipcRenderer.send("dropdown");
   }, [lastdoc]);
 
   useEffect(() => {
@@ -61,10 +70,6 @@ const EditProduct = () => {
       pStockRef.current.value = selected?.stored;
     }
   }, [selected]);
-
-  ipcRenderer.on("dropdown:ready", (event, data) => {
-    setDropdown(data.dropdown);
-  });
 
   const handleScroll = (event) => {
     let triggerHeight =
@@ -94,11 +99,15 @@ const EditProduct = () => {
       stored: parseInt(event.target.pStock.value),
     });
 
-    ipcRenderer.send("updateItem", {
-      item: flagItem,
-      id: itemID,
-      collectionName: "items",
-    });
+    ipcRenderer
+      .invoke("updateItem", {
+        item: flagItem,
+        id: itemID,
+        collectionName: "items",
+      })
+      .then((message) => {
+        toast(message);
+      });
 
     refreshPage();
     event.target.pName.value = "";
@@ -109,30 +118,24 @@ const EditProduct = () => {
 
   const handleSearch = (event) => {
     if (event.target.value.length > 0) {
-      ipcRenderer.send("querybyParimeter", {
-        searchValue: event.target.value.toUpperCase(),
-        sender: "EditProducts",
-      });
+      ipcRenderer
+        .invoke("querybyParimeter", {
+          searchValue: event.target.value.toUpperCase(),
+          sender: "EditProducts",
+        })
+        .then((items) => {
+          setList(items);
+        });
     } else {
       refreshPage();
     }
   };
-
-  ipcRenderer.on("paginatedQuery:done", (e, data) => {
-    if (!data.empty) {
-      setList([...list, ...data.items]);
-    }
-    setLoaded(true);
-  });
 
   ipcRenderer.on("deleteItem:done", (e, data) => {
     toast(data.message);
     refreshPage();
   });
 
-  ipcRenderer.on("updateItem:done", (e, data) => {
-    toast(data.message);
-  });
   return (
     <PageTemplate>
       <div className="controlPanel">

@@ -25,7 +25,13 @@ const ProductComp = ({ item, updateCart, updateTotal }) => {
   );
 
   useEffect(() => {
-    ipcRenderer.send("getCompInfo", { brandID, serial });
+    ipcRenderer.invoke("getCompInfo", { brandID, serial }).then((discount) => {
+      setDisc(discount);
+      setpPrice(
+        currency(price).subtract(currency(price).multiply(disc).divide(100))
+          .value
+      );
+    });
   }, []);
 
   useEffect(() => {
@@ -33,13 +39,6 @@ const ProductComp = ({ item, updateCart, updateTotal }) => {
       currency(price).subtract(currency(price).multiply(disc).divide(100)).value
     );
   }, [disc]);
-
-  ipcRenderer.on(`getCompInfo:done:${serial}`, (e, data) => {
-    setDisc(data.discount);
-    setpPrice(
-      currency(price).subtract(currency(price).multiply(disc).divide(100)).value
-    );
-  });
 
   const handleAmount = (event) => {
     setAmount(event.target.value > stored ? stored : event.target.value);

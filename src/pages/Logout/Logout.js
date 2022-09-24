@@ -26,14 +26,12 @@ const Logout = () => {
   const [loading, setLoading] = useState(false);
   const handleLogout = () => {
     setLoading(!loading);
-    ipcRenderer.send("logout");
+    ipcRenderer.invoke("logout").then((message) => {
+      toast(message);
+      setLoading(!loading);
+      setCurrentUser(null);
+    });
   };
-
-  ipcRenderer.on("logout:done", (e, data) => {
-    toast(data.message);
-    setLoading(!loading);
-    setCurrentUser(null);
-  });
 
   return (
     <PageTemplate>

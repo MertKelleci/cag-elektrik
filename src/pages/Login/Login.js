@@ -28,25 +28,22 @@ const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    console.log("handleLogin Çağırıldı");
     setLoading(!loading);
-    ipcRenderer.send("login", {
-      email: event.target.email.value,
-      password: event.target.password.value,
-    });
+    ipcRenderer
+      .invoke("login", {
+        email: event.target.email.value,
+        password: event.target.password.value,
+      })
+      .then((data) => {
+        toast(data.message);
+        setLoading(!loading);
+        if (data.status === 200) {
+          setCurrentUser(data.user);
+        }
+      });
     event.target.email.value = "";
     event.target.password.value = "";
   };
-
-  ipcRenderer.on("login:done", (e, data) => {
-    console.log("login:done Çağırıldı");
-    setLoading(!loading);
-    toast(data.message);
-    if (data.status == 200) {
-      setCurrentUser(data.user);
-    }
-  });
-
   return (
     <PageTemplate>
       <div className="center">

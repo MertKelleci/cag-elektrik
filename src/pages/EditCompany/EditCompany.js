@@ -35,10 +35,17 @@ const EditCompany = () => {
   const cDiscRef = useRef(null);
 
   useEffect(() => {
-    ipcRenderer.send("paginatedQuery", {
-      collectionName: "brands",
-      lastdoc: lastdoc,
-    });
+    ipcRenderer
+      .invoke("paginatedQuery", {
+        collectionName: "brands",
+        lastdoc: lastdoc,
+      })
+      .then((items) => {
+        if (!items.empty) {
+          setList([...list, ...items]);
+        }
+        setLoaded(true);
+      });
   }, [lastdoc]);
 
   useEffect(() => {
@@ -59,13 +66,6 @@ const EditCompany = () => {
       setLastdoc(list[list.length - 1]);
     }
   };
-
-  ipcRenderer.on("paginatedQuery:done", (e, data) => {
-    if (!data.empty) {
-      setList([...list, ...data.items]);
-    }
-    setLoaded(true);
-  });
 
   ipcRenderer.on("deleteItem:done", (e, data) => {
     toast(data.message);
@@ -96,23 +96,21 @@ const EditCompany = () => {
       discount: event.target.cDisc.value,
     });
 
-    console.log(flagItem);
-
-    ipcRenderer.send("updateItem", {
-      item: flagItem,
-      id: itemID,
-      collectionName: "brands",
-    });
+    ipcRenderer
+      .invoke("updateItem", {
+        item: flagItem,
+        id: itemID,
+        collectionName: "brands",
+      })
+      .then((message) => {
+        toast(message);
+      });
 
     refreshPage();
     event.target.cSerial.value = "";
     event.target.cName.value = "";
     event.target.cDisc.value = 0;
   };
-
-  ipcRenderer.on("updateItem:done", (e, data) => {
-    toast(data.message);
-  });
 
   return (
     <PageTemplate>

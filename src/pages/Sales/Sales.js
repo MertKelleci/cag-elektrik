@@ -26,11 +26,18 @@ const Sales = () => {
   const [list, setList] = useState([]);
   const [cart, setCart] = useState([]);
   useEffect(() => {
-    ipcRenderer.send("paginatedQuery", {
-      collectionName: "items",
-      lastdoc: lastdoc,
-      sender: "Sales",
-    });
+    ipcRenderer
+      .invoke("paginatedQuery", {
+        collectionName: "items",
+        lastdoc: lastdoc,
+        sender: "Sales",
+      })
+      .then((items) => {
+        if (!items.empty) {
+          setList([...list, ...items]);
+        }
+        setLoaded(true);
+      });
   }, [lastdoc]);
 
   const handleScroll = (event) => {
@@ -57,27 +64,21 @@ const Sales = () => {
 
   const handleSearch = (event) => {
     if (event.target.value.length > 0) {
-      ipcRenderer.send("querybyParimeter", {
-        searchValue: event.target.value.toUpperCase(),
-        sender: "Sales",
-      });
+      ipcRenderer
+        .invoke("querybyParimeter", {
+          searchValue: event.target.value.toUpperCase(),
+          sender: "Sales",
+        })
+        .then((items) => {
+          if (items.length > 0) {
+            setList(items);
+          }
+        });
     } else {
       refreshPage();
     }
   };
 
-  ipcRenderer.on("querybyParimeter:done", (e, data) => {
-    if (data.items.length > 0) {
-      setList(data.items);
-    }
-  });
-
-  ipcRenderer.on("paginatedQuery:done-Sales", (e, data) => {
-    if (!data.empty) {
-      setList([...list, ...data.items]);
-    }
-    setLoaded(true);
-  });
   return (
     <PageTemplate>
       <div className="controlPanel">

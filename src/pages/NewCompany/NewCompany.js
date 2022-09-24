@@ -40,13 +40,16 @@ const NewCompany = () => {
 
   useEffect(() => {
     if (company.name !== "") {
-      ipcRenderer.send("addItem", { item: company, dest: "brands" });
+      ipcRenderer
+        .invoke("addItem", { item: company, dest: "brands" })
+        .then((message) => {
+          toast(message);
+        })
+        .catch((err) => {
+          toast(err);
+        });
     }
   }, [company]);
-
-  ipcRenderer.on("addItem:message", (event, data) => {
-    toast(data.message);
-  });
 
   return (
     <PageTemplate>

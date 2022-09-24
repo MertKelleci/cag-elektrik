@@ -43,11 +43,16 @@ const Finalize = () => {
       init.current = false;
       return;
     }
-    ipcRenderer.send("create-receipt", {
-      cart: cart,
-      info: info,
-      currentUser: currentUser.name,
-    });
+    ipcRenderer
+      .invoke("create-receipt", {
+        cart: cart,
+        info: info,
+        currentUser: currentUser.name,
+      })
+      .then((message) => {
+        toast(message);
+        navigate("/sale");
+      });
 
     ipcRenderer.send("createPDF", { cart, info, currentUser });
     // navigate("/receipt", { state: { cart: cart, info: info } });
@@ -70,11 +75,6 @@ const Finalize = () => {
       payment: parseFloat(event.target.payment.value),
     });
   };
-
-  ipcRenderer.on("create-receipt:done", (e, data) => {
-    navigate("/sale");
-    toast(data.message);
-  });
 
   return (
     <PageTemplate>

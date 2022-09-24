@@ -29,11 +29,18 @@ const Receipts = () => {
   const [lDate, setLDate] = useState(null);
 
   useEffect(() => {
-    ipcRenderer.send("paginatedQuery", {
-      collectionName: "receipts",
-      lastdoc: lastdoc,
-      sender: "Receipts",
-    });
+    ipcRenderer
+      .invoke("paginatedQuery", {
+        collectionName: "receipts",
+        lastdoc: lastdoc,
+        sender: "Receipts",
+      })
+      .then((items) => {
+        if (!items.empty) {
+          setList([...list, ...items]);
+        }
+        setLoaded(true);
+      });
   }, [lastdoc]);
 
   const handleScroll = (event) => {
@@ -67,19 +74,10 @@ const Receipts = () => {
       return;
     }
 
-    ipcRenderer.send("searchWithDates", { fDate, lDate });
+    ipcRenderer.invoke("searchWithDates", { fDate, lDate }).then((list) => {
+      setList(list);
+    });
   };
-
-  ipcRenderer.on("paginatedQuery:done-Receipts", (e, data) => {
-    if (!data.empty) {
-      setList([...list, ...data.items]);
-    }
-    setLoaded(true);
-  });
-
-  ipcRenderer.on("searchWithDates:done", (e, data) => {
-    setList(data.list);
-  });
 
   return (
     <PageTemplate>
