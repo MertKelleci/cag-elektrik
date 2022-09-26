@@ -1,4 +1,4 @@
-const { BrowserWindow, app, ipcMain } = require("electron");
+const { BrowserWindow, app, ipcMain, Tray } = require("electron");
 const {
   default: installExtension,
   REACT_DEVELOPER_TOOLS,
@@ -33,6 +33,7 @@ function createWindow() {
     minHeight: 800,
     minWidth: 1280,
     icon: `${__dirname}/icon.ico`,
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -74,7 +75,7 @@ ipcMain.handle("paginatedQuery", async (e, data) => {
 });
 
 ipcMain.handle("querybyParimeter", async (e, data) => {
-  let items = await querybyParameter(data.searchValue);
+  let items = await querybyParameter(data.searchValue, data.sender);
   return items;
 });
 
@@ -83,9 +84,9 @@ ipcMain.handle("updateItem", async (e, data) => {
   return message;
 });
 
-ipcMain.on("deleteItem", async (e, data) => {
+ipcMain.handle("deleteItem", async (e, data) => {
   let message = await deleteItem(data.itemID, data.collectionName);
-  mainWindow.webContents.send("deleteItem:done", { message });
+  return message;
 });
 
 ipcMain.handle("dropdown", async () => {

@@ -31,7 +31,7 @@ const NewCompany = () => {
     setCompany({
       discount: parseFloat(event.target.cDisc.value),
       name: event.target.cName.value.toUpperCase(),
-      serial: event.target.cSerial.value,
+      serial: event.target.cSerial.value.toUpperCase(),
     });
     event.target.cDisc.value = 0;
     event.target.cName.value = "";
@@ -80,7 +80,7 @@ const NewCompany = () => {
               required
             />
             <label htmlFor="cDisc" className="form__label">
-              Firma Diskontosu
+              Firma İskontosu
             </label>
           </div>
           <div className="form__group field">

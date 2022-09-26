@@ -84,6 +84,9 @@ const querybyParameter = async (searchValue, sender) => {
   if (sender === "Receipts") {
     q1 = query(receiptsRef, where("company", "==", `${searchValue}`));
     q2 = query(receiptsRef, where("customer", "==", `${searchValue}`));
+  } else if (sender === "EditCompany") {
+    q1 = query(brandsRef, where("serial", "==", `${searchValue}`));
+    q2 = query(brandsRef, where("name", "==", `${searchValue}`));
   } else {
     q1 = query(itemsRef, where("serial", "==", `${searchValue}`));
     q2 = query(itemsRef, where("name", "==", `${searchValue}`));
@@ -92,6 +95,7 @@ const querybyParameter = async (searchValue, sender) => {
   const items = [];
   await getDocs(q1).then((snapshot) => {
     snapshot.docs.forEach((doc) => {
+      console.log(doc.data());
       items.push({ ...doc.data(), id: doc.id });
     });
   });

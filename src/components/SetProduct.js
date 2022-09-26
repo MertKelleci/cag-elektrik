@@ -16,7 +16,7 @@ const buttonVar = {
   },
 };
 
-const ProductComp = ({ item, setSelected, selected, brand }) => {
+const ProductComp = ({ item, setSelected, selected, brand, deleteItem }) => {
   let { brandID, price, serial, stored, name } = item;
   const [disc, setDisc] = useState(0);
   const [highLight, setHighlight] = useState(false);
@@ -40,17 +40,6 @@ const ProductComp = ({ item, setSelected, selected, brand }) => {
     (price - (price * disc) / 100).toFixed(2)
   );
 
-  const handleSelection = () => {
-    setSelected(item);
-  };
-
-  const deleteItem = () => {
-    ipcRenderer.send("deleteItem", {
-      itemID: item?.id,
-      collectionName: "items",
-    });
-  };
-
   return (
     <tr>
       <th>{name}</th>
@@ -69,7 +58,9 @@ const ProductComp = ({ item, setSelected, selected, brand }) => {
           variants={buttonVar}
           initial="init"
           whileHover="hover"
-          onClick={handleSelection}
+          onClick={() => {
+            setSelected(item);
+          }}
         >
           {highLight ? <TiTick /> : <TiEdit />}
         </motion.button>
@@ -80,7 +71,9 @@ const ProductComp = ({ item, setSelected, selected, brand }) => {
           variants={buttonVar}
           initial="init"
           whileHover="hover"
-          onClick={deleteItem}
+          onClick={() => {
+            deleteItem(item);
+          }}
         >
           <TiDelete />
         </motion.button>

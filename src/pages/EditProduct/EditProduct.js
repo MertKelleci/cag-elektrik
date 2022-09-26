@@ -30,13 +30,7 @@ const EditProduct = () => {
   const pNameRef = useRef(null);
   const pSerialRef = useRef(null);
   const pStockRef = useRef(null);
-  const [flagItem, setflagItem] = useState({
-    brandID: "",
-    name: "",
-    price: 0.0,
-    serial: "abc",
-    stored: 0,
-  });
+  const [flagItem, setflagItem] = useState(null);
   const [dropdownSelected, setDropdownSelected] = useState({
     value: "",
     label: "",
@@ -61,6 +55,20 @@ const EditProduct = () => {
   }, [lastdoc]);
 
   useEffect(() => {
+    if (flagItem) {
+      ipcRenderer
+        .invoke("updateItem", {
+          item: flagItem,
+          id: itemID,
+          collectionName: "items",
+        })
+        .then((message) => {
+          toast(message);
+        });
+    }
+  }, [flagItem]);
+
+  useEffect(() => {
     if (selected !== null) {
       setitemID(selected?.id);
       pPriceRef.current.value = selected?.price;
@@ -75,7 +83,7 @@ const EditProduct = () => {
     let triggerHeight =
       event.currentTarget.scrollTop + event.currentTarget.offsetHeight;
 
-    if (triggerHeight >= event.currentTarget.scrollHeight) {
+    if (triggerHeight >= (event.currentTarget.scrollHeight * 8) / 10) {
       setLastdoc(list[list.length - 1]);
     }
   };
@@ -89,6 +97,14 @@ const EditProduct = () => {
     setDropdownSelected(selectedOption);
   };
 
+  const handleDelete = (item) => {
+    ipcRenderer
+      .invoke("deleteItem", { item: item, collectionName: "items" })
+      .then((message) => {
+        toast(message);
+      });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setflagItem({
@@ -98,17 +114,6 @@ const EditProduct = () => {
       serial: event.target.pSerial.value,
       stored: parseInt(event.target.pStock.value),
     });
-
-    ipcRenderer
-      .invoke("updateItem", {
-        item: flagItem,
-        id: itemID,
-        collectionName: "items",
-      })
-      .then((message) => {
-        toast(message);
-      });
-
     refreshPage();
     event.target.pName.value = "";
     event.target.pPrice.value = 0;
@@ -178,6 +183,7 @@ const EditProduct = () => {
                     brand={dropdown.find((o) => o.value === item?.brandID)}
                     setSelected={setSelected}
                     selected={selected}
+                    deleteItem={handleDelete}
                   />
                 );
               })}

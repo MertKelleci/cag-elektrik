@@ -53,16 +53,22 @@ const Receipts = () => {
   };
 
   const refreshPage = () => {
-    setLastdoc(null);
+    setLastdoc(lastdoc ? null : {});
     setList([]);
   };
 
   const handleSearch = (event) => {
     if (event.target.value.length > 0) {
-      ipcRenderer.send("querybyParimeter", {
-        searchValue: event.target.value.toUpperCase(),
-        sender: "Receipts",
-      });
+      ipcRenderer
+        .invoke("querybyParimeter", {
+          searchValue: event.target.value.toUpperCase(),
+          sender: "Receipts",
+        })
+        .then((items) => {
+          if (items.length > 0) {
+            setList(items);
+          }
+        });
     } else {
       refreshPage();
     }

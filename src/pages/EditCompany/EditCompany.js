@@ -50,7 +50,6 @@ const EditCompany = () => {
 
   useEffect(() => {
     if (selected !== null) {
-      console.log(selected);
       setitemID(selected.id);
       cNameRef.current.value = selected?.name;
       cSerialRef.current.value = selected?.serial;
@@ -62,15 +61,10 @@ const EditCompany = () => {
     let triggerHeight =
       event.currentTarget.scrollTop + event.currentTarget.offsetHeight;
 
-    if (triggerHeight >= event.currentTarget.scrollHeight) {
+    if (triggerHeight >= (event.currentTarget.scrollHeight * 7) / 10) {
       setLastdoc(list[list.length - 1]);
     }
   };
-
-  ipcRenderer.on("deleteItem:done", (e, data) => {
-    toast(data.message);
-    refreshPage();
-  });
 
   const refreshPage = () => {
     setList([]);
@@ -79,13 +73,25 @@ const EditCompany = () => {
 
   const handleSearch = (event) => {
     if (event.target.value.length > 0) {
-      ipcRenderer.send("querybyParimeter", {
-        searchValue: event.target.value.toUpperCase(),
-        sender: "EditCompany",
-      });
+      ipcRenderer
+        .invoke("querybyParimeter", {
+          searchValue: event.target.value.toUpperCase(),
+          sender: "EditCompany",
+        })
+        .then((items) => {
+          setList(items);
+        });
     } else {
       refreshPage();
     }
+  };
+
+  const handleDelete = (item) => {
+    ipcRenderer
+      .invoke("deleteItem", { item: item, collectionName: "brands" })
+      .then((message) => {
+        toast(message);
+      });
   };
 
   const handleSubmit = (event) => {
@@ -150,6 +156,7 @@ const EditCompany = () => {
                     key={index}
                     setSelected={setSelected}
                     selected={selected}
+                    deleteItem={handleDelete}
                   />
                 );
               })}

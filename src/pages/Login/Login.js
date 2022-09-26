@@ -28,7 +28,7 @@ const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    setLoading(!loading);
+    setLoading(true);
     ipcRenderer
       .invoke("login", {
         email: event.target.email.value,
@@ -36,7 +36,7 @@ const Login = () => {
       })
       .then((data) => {
         toast(data.message);
-        setLoading(!loading);
+        setLoading(false);
         if (data.status === 200) {
           setCurrentUser(data.user);
         }

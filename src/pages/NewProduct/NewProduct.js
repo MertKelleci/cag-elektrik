@@ -36,9 +36,8 @@ const NewProduct = () => {
   });
 
   useEffect(() => {
-    ipcRenderer.send("dropdown");
-    ipcRenderer.on("dropdown:ready", (event, data) => {
-      setDropdown(data.dropdown);
+    ipcRenderer.invoke("dropdown").then((thisDropdown) => {
+      setDropdown(thisDropdown);
     });
   }, []);
 
