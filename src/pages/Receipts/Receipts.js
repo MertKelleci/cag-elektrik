@@ -62,7 +62,7 @@ const Receipts = () => {
       ipcRenderer
         .invoke("querybyParimeter", {
           searchValue: event.target.value.toUpperCase(),
-          sender: "Receipts",
+          sender: "receipts",
         })
         .then((items) => {
           if (items.length > 0) {
@@ -80,6 +80,7 @@ const Receipts = () => {
       return;
     }
 
+    console.log(fDate + " " + lDate);
     ipcRenderer.invoke("searchWithDates", { fDate, lDate }).then((list) => {
       setList(list);
     });

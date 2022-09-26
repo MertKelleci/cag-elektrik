@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import PageTemplate from "../PageTemplate";
 import currency from "currency.js";
 import { motion } from "framer-motion";
@@ -7,7 +7,6 @@ import { LoginContext } from "../../LoginContext";
 import "./Finalize.scss";
 import jsPDFInvoiceTemplate, {
   OutputType,
-  jsPDF,
 } from "jspdf-invoice-template-nodejs";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -66,7 +65,6 @@ const createProp = (cart, currentUser, info) => {
         "Deliklikaya Mah. Deliklikaya - Altinsehir Yolu Cad. 25 F Arnavutkoy/ISTANBUL",
       phone: "0212 886 85 95",
       email: "info@cagelektrikmuhendislik.com",
-      // email_1: "",
       website: "www.cagelektrikmuhendislik.com",
     },
     contact: {
@@ -74,8 +72,6 @@ const createProp = (cart, currentUser, info) => {
       name: `Firma: ${info.company}`,
       address: `Satin Alan: ${info.buyer}`,
       otherInfo: `Satis Yapan: ${currentUser.name}`,
-      // phone: `${currentUser.name}`,
-      // email: "",
     },
     invoice: {
       label: "Makbuz #: ",
@@ -132,14 +128,6 @@ const createProp = (cart, currentUser, info) => {
             fontSize: 10, //optional, default 12
           },
         },
-        // {
-        //   col1: "Yapilan Odeme",
-        //   col2: `${info.payment}`,
-        //   col3: "",
-        //   style: {
-        //     fontSize: 10, //optional, default 12
-        //   },
-        // },
       ],
       invDescLabel: "Imza Alani",
       invDesc: "Satin Alan:                                      Satis Yapan:",
@@ -160,7 +148,6 @@ const Finalize = () => {
   const [total, setTotal] = useState(0);
   const init = useRef(true);
   const { currentUser } = useContext(LoginContext);
-  const navigate = useNavigate();
   const [info, setInfo] = useState({
     company: "",
     buyer: "",
@@ -187,8 +174,6 @@ const Finalize = () => {
         );
         console.log(pdfCreated);
       });
-
-    // navigate("/receipt", { state: { cart: cart, info: info } });
   }, [info]);
 
   useEffect(() => {

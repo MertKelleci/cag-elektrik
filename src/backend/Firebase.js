@@ -170,11 +170,18 @@ const itemSold = async (id, amount) => {
 const paginatedQuery = async (collectionName, lastdoc) => {
   let q;
   if (collectionName === "receipts") {
+    let lastdocSnapshot = null;
+
+    if (lastdoc != null) {
+      const docRef = doc(db, "receipts", lastdoc.id);
+      lastdocSnapshot = await getDoc(docRef);
+    }
+
     q = query(
       refSelect(collectionName),
       orderBy("date"),
-      startAfter(lastdoc?.date || 0),
-      limit(10)
+      startAfter(lastdocSnapshot || 0),
+      limit(20)
     );
   } else {
     q = query(
@@ -269,8 +276,8 @@ const getUserInfo = async (uid) => {
 };
 
 const searchWithDates = async (fDate, lDate) => {
-  const date1 = new Timestamp(fDate);
-  const date2 = new Timestamp(lDate);
+  const date1 = Timestamp.fromDate(fDate);
+  const date2 = Timestamp.fromDate(lDate);
 
   const q = query(
     receiptsRef,

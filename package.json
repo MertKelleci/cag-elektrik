@@ -13,8 +13,7 @@
     "cross-env": "^7.0.3",
     "currency.js": "^2.0.4",
     "dotenv": "^16.0.2",
-    "electron": "^20.0.0",
-    "electron-builder": "^23.3.3",
+    "electron-devtools-installer": "^3.2.0",
     "electron-is-dev": "^2.0.0",
     "firebase": "^9.9.2",
     "framer-motion": "^6.5.1",
@@ -39,10 +38,10 @@
     "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
-  "build":{
+  "build": {
     "extends": null,
     "appId": "com.cag-elektrik",
-   "files": [
+    "files": [
       "dist/**/*",
       "build/**/*",
       "node_modules/**/*",
@@ -71,6 +70,7 @@
     ]
   },
   "devDependencies": {
-    "electron-devtools-installer": "^3.2.0"
+    "electron": "^20.2.0",
+    "electron-builder": "^23.3.3"
   }
 }
