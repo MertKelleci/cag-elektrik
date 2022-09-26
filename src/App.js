@@ -7,7 +7,6 @@ import Sales from "./pages/Sales/Sales";
 import Finalize from "./pages/Sales/Finalize";
 import EditProduct from "./pages/EditProduct/EditProduct";
 import EditCompany from "./pages/EditCompany/EditCompany";
-import Receipt from "./pages/Receipt/Receipt";
 import Receipts from "./pages/Receipts/Receipts";
 import { LoginContext } from "./LoginContext";
 import { useState } from "react";
