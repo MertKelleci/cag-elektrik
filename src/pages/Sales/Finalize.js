@@ -29,9 +29,9 @@ const buttonVar = {
 
 const createProp = (cart, currentUser, info) => {
   const time = new Date();
-  const now = `${time.getDate()}.${
+  const now = `${time.getDate()}-${
     time.getMonth() + 1
-  }.${time.getFullYear()} ${time.getHours()}-${time.getMinutes()}`;
+  }-${time.getFullYear()} ${time.getHours()}.${time.getMinutes()}`;
 
   const props = {
     outputType: OutputType.Save,
