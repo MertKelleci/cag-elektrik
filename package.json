@@ -14,8 +14,11 @@
     "currency.js": "^2.0.4",
     "dotenv": "^16.0.2",
     "electron": "^20.0.0",
+    "electron-builder": "^23.3.3",
+    "electron-is-dev": "^2.0.0",
     "firebase": "^9.9.2",
     "framer-motion": "^6.5.1",
+    "jspdf-invoice-template-nodejs": "^1.4.30",
     "node-sass": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,8 +36,21 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "",
+    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.js",
     "electron:start": "wait-on tcp:3000 && electron ."
+  },
+  "build":{
+    "extends": null,
+    "appId": "com.cag-elektrik",
+   "files": [
+      "dist/**/*",
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   },
   "eslintConfig": {
     "extends": [

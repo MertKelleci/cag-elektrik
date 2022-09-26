@@ -3,9 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PageTemplate from "../PageTemplate";
 import currency from "currency.js";
 import { motion } from "framer-motion";
-import Receipt from "../HTML Receipt/Receipt";
 import { LoginContext } from "../../LoginContext";
 import "./Finalize.scss";
+import jsPDFInvoiceTemplate, {
+  OutputType,
+  jsPDF,
+} from "jspdf-invoice-template-nodejs";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,6 +25,133 @@ const buttonVar = {
     color: "#EEEEEE",
     scale: 1.2,
   },
+};
+
+const createProp = (cart, currentUser, info) => {
+  const time = new Date();
+  const now = `${time.getDate()}-${
+    time.getMonth() + 1
+  }-${time.getFullYear()} ${time.getHours()}.${time.getMinutes()}`;
+
+  const props = {
+    outputType: OutputType.Save,
+    returnJsPDFDocObject: true,
+    fileName: `${now}.pdf`,
+    orientationLandscape: false,
+    compress: true,
+    logo: {
+      src: process.env.PUBLIC_URL + "cag_elektrik.png",
+      type: "PNG", //optional, when src= data:uri (nodejs case)
+      width: 53.33, //aspect ratio = width/height
+      height: 26.66,
+      margin: {
+        top: 0, //negative or positive num, from the current position
+        left: 0, //negative or positive num, from the current position
+      },
+    },
+    stamp: {
+      inAllPages: true, //by default = false, just in the last page
+      src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/qr_code.jpg",
+      type: "JPG", //optional, when src= data:uri (nodejs case)
+      width: 20, //aspect ratio = width/height
+      height: 20,
+      margin: {
+        top: 0, //negative or positive num, from the current position
+        left: 0, //negative or positive num, from the current position
+      },
+    },
+    business: {
+      name: "Cag Elektrik",
+      address:
+        "Deliklikaya Mah. Deliklikaya - Altinsehir Yolu Cad. 25 F Arnavutkoy/ISTANBUL",
+      phone: "0212 886 85 95",
+      email: "info@cagelektrikmuhendislik.com",
+      // email_1: "",
+      website: "www.cagelektrikmuhendislik.com",
+    },
+    contact: {
+      label: "Makbuz bilgileri:",
+      name: `Firma: ${info.company}`,
+      address: `Satin Alan: ${info.buyer}`,
+      otherInfo: `Satis Yapan: ${currentUser.name}`,
+      // phone: `${currentUser.name}`,
+      // email: "",
+    },
+    invoice: {
+      label: "Makbuz #: ",
+      num: 19,
+      invDate: `Islem Tarihi: ${now}`,
+      invGenDate: `Cikti Tarihi: ${now}`,
+      headerBorder: false,
+      tableBodyBorder: false,
+      header: [
+        {
+          title: "#",
+          style: {
+            width: 10,
+          },
+        },
+        {
+          title: "Isim",
+          style: {
+            width: 30,
+          },
+        },
+        {
+          title: "Kod",
+          style: {
+            width: 80,
+          },
+        },
+        { title: "Fiyat" },
+        { title: "Adet" },
+        { title: "Iskonto" },
+        { title: "Total" },
+      ],
+      table: Array.from(cart, (item, index) => [
+        index + 1,
+        item.name,
+        item.id,
+        item.initPrice,
+        item.amount,
+        item.disc,
+        item.totalPrice.toFixed(2),
+      ]),
+      additionalRows: [
+        {
+          col1: `Total:`,
+          col2: `${info.total}`,
+          style: {
+            fontSize: 14, //optional, default 12
+          },
+        },
+        {
+          col1: "Yapilan Odeme:",
+          col2: `${info.payment}`,
+          style: {
+            fontSize: 10, //optional, default 12
+          },
+        },
+        // {
+        //   col1: "Yapilan Odeme",
+        //   col2: `${info.payment}`,
+        //   col3: "",
+        //   style: {
+        //     fontSize: 10, //optional, default 12
+        //   },
+        // },
+      ],
+      invDescLabel: "Imza Alani",
+      invDesc: "Satin Alan:                                      Satis Yapan:",
+    },
+    footer: {
+      text: "The invoice is created on a computer and is valid without the signature and stamp.",
+    },
+    pageEnable: true,
+    pageLabel: "Page ",
+  };
+
+  return props;
 };
 
 const Finalize = () => {
@@ -51,10 +181,13 @@ const Finalize = () => {
       })
       .then((message) => {
         toast(message);
-        navigate("/sale");
+        createProp(cart, currentUser, info);
+        const pdfCreated = jsPDFInvoiceTemplate(
+          createProp(cart, currentUser, info)
+        );
+        console.log(pdfCreated);
       });
 
-    ipcRenderer.send("createPDF", { cart, info, currentUser });
     // navigate("/receipt", { state: { cart: cart, info: info } });
   }, [info]);
 

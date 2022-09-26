@@ -5,6 +5,7 @@ const {
 } = require("electron-devtools-installer");
 const path = require("path");
 const fs = require("fs");
+const isDev = require("electron-is-dev");
 
 const {
   getSnapshot,
@@ -41,7 +42,11 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadURL("http://localhost:3000");
+  mainWindow.loadURL(
+    isDev
+      ? "http://localhost:3000"
+      : `file://${path.join(__dirname, "../build/index.html")}`
+  );
   mainWindow.maximize();
 }
 
