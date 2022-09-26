@@ -32,16 +32,16 @@ const createProp = (cart, currentUser, info) => {
   const time = new Date();
   const now = `${time.getDate()}.${
     time.getMonth() + 1
-  }.${time.getFullYear()} ${time.getHours()}:${time.getMinutes()}`;
+  }.${time.getFullYear()} ${time.getHours()}-${time.getMinutes()}`;
 
   const props = {
     outputType: OutputType.Save,
     returnJsPDFDocObject: true,
-    fileName: `${now}`,
+    fileName: `${now}.pdf`,
     orientationLandscape: false,
     compress: true,
     logo: {
-      src: process.env.PUBLIC_URL + "cag_elektrik.jpeg",
+      src: process.env.PUBLIC_URL + "cag_elektrik.png",
       type: "PNG", //optional, when src= data:uri (nodejs case)
       width: 53.33, //aspect ratio = width/height
       height: 26.66,
@@ -62,27 +62,27 @@ const createProp = (cart, currentUser, info) => {
       },
     },
     business: {
-      name: "Çağ Elektrik",
+      name: "Cag Elektrik",
       address:
-        "Deliklikaya Mah. Deliklikaya - Altınşehir Yolu Cad. 25 F Arnavutköy/İSTANBUL",
+        "Deliklikaya Mah. Deliklikaya - Altinsehir Yolu Cad. 25 F Arnavutkoy/ISTANBUL",
       phone: "0212 886 85 95",
       email: "info@cagelektrikmuhendislik.com",
-      email_1: "",
+      // email_1: "",
       website: "www.cagelektrikmuhendislik.com",
     },
     contact: {
       label: "Makbuz bilgileri:",
-      name: `${info.company}`,
-      address: `${info.buyer}`,
-      phone: `${currentUser.name}`,
-      email: "",
-      otherInfo: "",
+      name: `Firma: ${info.company}`,
+      address: `Satin Alan: ${info.buyer}`,
+      otherInfo: `Satis Yapan: ${currentUser.name}`,
+      // phone: `${currentUser.name}`,
+      // email: "",
     },
     invoice: {
       label: "Makbuz #: ",
       num: 19,
-      invDate: `İşlem Tarihi: ${now}`,
-      invGenDate: `Çıktı Tarihi: ${now}`,
+      invDate: `Islem Tarihi: ${now}`,
+      invGenDate: `Cikti Tarihi: ${now}`,
       headerBorder: false,
       tableBodyBorder: false,
       header: [
@@ -93,7 +93,7 @@ const createProp = (cart, currentUser, info) => {
           },
         },
         {
-          title: "İsim",
+          title: "Isim",
           style: {
             width: 30,
           },
@@ -106,7 +106,7 @@ const createProp = (cart, currentUser, info) => {
         },
         { title: "Fiyat" },
         { title: "Adet" },
-        { title: "İskonto" },
+        { title: "Iskonto" },
         { title: "Total" },
       ],
       table: Array.from(cart, (item, index) => [
@@ -120,32 +120,30 @@ const createProp = (cart, currentUser, info) => {
       ]),
       additionalRows: [
         {
-          col1: "Total:",
+          col1: `Total:`,
           col2: `${info.total}`,
-          col3: "",
           style: {
             fontSize: 14, //optional, default 12
           },
         },
         {
-          col1: "",
-          col2: "",
-          col3: "",
-          style: {
-            fontSize: 0, //optional, default 12
-          },
-        },
-        {
-          col1: "Yapılan Ödeme",
+          col1: "Yapilan Odeme:",
           col2: `${info.payment}`,
-          col3: "",
           style: {
             fontSize: 10, //optional, default 12
           },
         },
+        // {
+        //   col1: "Yapilan Odeme",
+        //   col2: `${info.payment}`,
+        //   col3: "",
+        //   style: {
+        //     fontSize: 10, //optional, default 12
+        //   },
+        // },
       ],
-      invDescLabel: "İmza Alanı",
-      invDesc: "Satın Alan:                                      Satış Yapan:",
+      invDescLabel: "Imza Alani",
+      invDesc: "Satin Alan:                                      Satis Yapan:",
     },
     footer: {
       text: "The invoice is created on a computer and is valid without the signature and stamp.",
@@ -185,10 +183,10 @@ const Finalize = () => {
       .then((message) => {
         toast(message);
         createProp(cart, currentUser, info);
-        const pdfObject = jsPDFInvoiceTemplate(
+        const pdfCreated = jsPDFInvoiceTemplate(
           createProp(cart, currentUser, info)
         );
-        console.log(pdfObject);
+        console.log(pdfCreated);
       });
 
     // navigate("/receipt", { state: { cart: cart, info: info } });
