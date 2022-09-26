@@ -16,6 +16,7 @@
     "electron": "^20.0.0",
     "firebase": "^9.9.2",
     "framer-motion": "^6.5.1",
+    "jspdf-invoice-template-nodejs": "^1.4.30",
     "node-sass": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
