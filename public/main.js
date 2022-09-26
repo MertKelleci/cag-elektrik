@@ -19,7 +19,7 @@ const {
   logout,
   addReceipt,
   searchWithDates,
-} = require("../src/backend/Firebase");
+} = require(`${__dirname}/Firebase.js`);
 
 let mainWindow;
 
@@ -53,9 +53,7 @@ function createWindow() {
 app.on("ready", createWindow);
 
 app.on("window-all-closed", function () {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on("activate", function () {

@@ -1,6 +1,9 @@
 {
   "name": "cag-elektrik",
-  "version": "0.1.0",
+  "author": "Mert KELLECİ",
+  "description": "Desktop app for Çağ Elektrik",
+  "version": "1.0.0",
+  "productName": "Çağ Elektrik",
   "private": true,
   "main": "public/main.js",
   "homepage": "./",
@@ -40,6 +43,7 @@
   },
   "build": {
     "extends": null,
+    "icon": "icon.ico",
     "appId": "com.cag-elektrik",
     "files": [
       "dist/**/*",
