@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PageTemplate from "../PageTemplate";
 import currency from "currency.js";
 import { motion } from "framer-motion";
-import Receipt from "../HTML Receipt/Receipt";
 import { LoginContext } from "../../LoginContext";
 import "./Finalize.scss";
 import jsPDFInvoiceTemplate, {
