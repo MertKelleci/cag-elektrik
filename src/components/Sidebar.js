@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
 import { FaBars } from "react-icons/fa";
-import { SidebarData as routes1 } from "./SidebarData";
+import { routes0, routes1 } from "./SidebarData";
 import { LoginContext } from "../LoginContext";
 
 const showAnimation = {
@@ -30,7 +30,9 @@ const SideBar = ({ children }) => {
   const toggle = () => setIsOpen(!isOpen);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser?.authLvl === 0) {
+      setRoutes(routes0);
+    } else if (currentUser?.authLvl === 1) {
       setRoutes(routes1);
     } else {
       setRoutes([]);

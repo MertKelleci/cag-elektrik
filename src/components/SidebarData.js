@@ -1,10 +1,9 @@
 import React from "react";
 import * as MdIcons from "react-icons/md";
-// import * as GrIcons from "react-icons/gr";
 import * as IoIcons from "react-icons/io";
 import { RiFileSettingsFill, RiFolderSettingsFill } from "react-icons/ri";
 
-export const SidebarData = [
+const routes0 = [
   {
     path: "#",
     name: "Yeni",
@@ -50,3 +49,18 @@ export const SidebarData = [
     icon: <MdIcons.MdReceiptLong />,
   },
 ];
+
+const routes1 = [
+  {
+    path: "/sale",
+    name: "Satış",
+    icon: <MdIcons.MdAddShoppingCart />,
+  },
+  {
+    path: "/receipts",
+    name: "Fiş",
+    icon: <MdIcons.MdReceiptLong />,
+  },
+];
+
+export { routes0, routes1 };
