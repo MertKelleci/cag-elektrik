@@ -79,8 +79,6 @@ const Receipts = () => {
       toast("Lütfen tarihleri girin!");
       return;
     }
-
-    console.log(fDate + " " + lDate);
     ipcRenderer.invoke("searchWithDates", { fDate, lDate }).then((list) => {
       setList(list);
     });

@@ -32,7 +32,7 @@ const ProductComp = ({ item, updateCart, updateTotal }) => {
           .value
       );
     });
-  }, []);
+  }, [item]);
 
   useEffect(() => {
     setpPrice(

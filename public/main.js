@@ -88,7 +88,6 @@ ipcMain.handle("updateItem", async (e, data) => {
 });
 
 ipcMain.handle("deleteItem", async (e, data) => {
-  console.log(data.item);
   const message = await deleteItem(data.item.id, data.collectionName);
   return message;
 });
