@@ -25,11 +25,7 @@ const EditCompany = () => {
   const [loaded, setLoaded] = useState(false);
   const [selected, setSelected] = useState(null);
   const [itemID, setitemID] = useState("");
-  const [flagItem, setflagItem] = useState({
-    serial: "",
-    name: "",
-    discount: 0.0,
-  });
+  const [flagItem, setflagItem] = useState(null);
   const cNameRef = useRef(null);
   const cSerialRef = useRef(null);
   const cDiscRef = useRef(null);
@@ -47,6 +43,20 @@ const EditCompany = () => {
         setLoaded(true);
       });
   }, [lastdoc]);
+
+  useEffect(() => {
+    if (flagItem != null) {
+      ipcRenderer
+        .invoke("updateItem", {
+          item: flagItem,
+          id: itemID,
+          collectionName: "brands",
+        })
+        .then((message) => {
+          toast(message);
+        });
+    }
+  }, [flagItem]);
 
   useEffect(() => {
     if (selected !== null) {
@@ -91,6 +101,10 @@ const EditCompany = () => {
       .invoke("deleteItem", { item: item, collectionName: "brands" })
       .then((message) => {
         toast(message);
+        refreshPage();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -101,16 +115,6 @@ const EditCompany = () => {
       name: event.target.cName.value.toUpperCase(),
       discount: event.target.cDisc.value,
     });
-
-    ipcRenderer
-      .invoke("updateItem", {
-        item: flagItem,
-        id: itemID,
-        collectionName: "brands",
-      })
-      .then((message) => {
-        toast(message);
-      });
 
     refreshPage();
     event.target.cSerial.value = "";

@@ -43,7 +43,7 @@
   },
   "build": {
     "extends": null,
-    "icon": "icon.ico",
+    "icon": "./icon.ico",
     "appId": "com.cag-elektrik",
     "files": [
       "dist/**/*",
@@ -52,7 +52,7 @@
       "package.json"
     ],
     "directories": {
-      "buildResources": "assets"
+      "buildResources": "public"
     }
   },
   "eslintConfig": {
