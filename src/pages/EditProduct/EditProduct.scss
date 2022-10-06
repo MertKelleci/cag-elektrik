@@ -32,13 +32,17 @@
         width: 100%;
         box-sizing: border-box;
 
+        .margin{
+            margin-right: 1%;
+        }
+
         .button-EditP{
             width: 25%;
             border-radius: 10px;
         }
 
         .selectField{
-            width: 25%;
+            width: 58%;
             align-self: flex-end;
         }
     }

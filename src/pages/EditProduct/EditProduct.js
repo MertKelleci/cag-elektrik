@@ -193,7 +193,7 @@ const EditProduct = () => {
       <div className="editArea-edit">
         <form onSubmit={handleSubmit}>
           <div className="cells">
-            <div className="form__group field">
+            <div className="form__group field margin">
               <input
                 type="text"
                 className="form__field"
@@ -216,7 +216,7 @@ const EditProduct = () => {
             </div>
           </div>
           <div className="cells">
-            <div className="form__group field">
+            <div className="form__group field margin">
               <input
                 step="0.01"
                 type="number"
@@ -231,7 +231,7 @@ const EditProduct = () => {
                 Ürün Fiyatı
               </label>
             </div>
-            <div className="form__group field">
+            <div className="form__group field margin">
               <input
                 type="text"
                 className="form__field"
@@ -247,7 +247,7 @@ const EditProduct = () => {
             </div>
           </div>
           <div className="cells">
-            <div className="form__group field">
+            <div className="form__group field margin">
               <input
                 type="number"
                 className="form__field"
